@@ -84,6 +84,10 @@ while True:
             
         elif opcao_menu == 'E':
             print('='*5 + ' Extrato Bancário ' + '='*5)
+            
+            if len(extrato_saque) == 0 or len(extrato_saque) == 0: # Se não for feito nenhum depósito e nenhum saque, aparece a mensagem de que não há movimentações.
+                print('\nNão há movimentações para o extrato.\n')
+                
             for saque in extrato_saque:
                 print(f'\033[1;31m - {saque}')  # Saída para os saques feitos sairem na coloração vermelha no extrato.
                 
