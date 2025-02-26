@@ -1,6 +1,7 @@
 💼 Sistema Bancário Simples em Python
 
 Este é um sistema bancário simples desenvolvido em Python que permite ao usuário realizar saques, depósitos e visualizar o extrato de transações.
+--------------------------------------------------------------------------------------------------------------
 
 ✨ Funcionalidades
 
@@ -11,12 +12,14 @@ Este é um sistema bancário simples desenvolvido em Python que permite ao usuá
 📋 Extrato: Exibe todas as transações realizadas (saques e depósitos) e o saldo atual.
 
 ⏳ Sistema de Menu: Interação simples com opções de Saque, Depósito, Extrato e Sair.
+--------------------------------------------------------------------------------------------------------------
 
-⚙️ Requisitos
+⚙️ Requisitos:
 
 Para executar este sistema bancário, é necessário ter o Python 3 instalado em seu computador.
+--------------------------------------------------------------------------------------------------------------
 
-📚 Como Executar o Programa
+📚 Como Executar o Programa:
 
 Clone este repositório
 
@@ -29,8 +32,9 @@ cd sistema-bancario-python
 Execute o programa
 
 python banco.py
+--------------------------------------------------------------------------------------------------------------
 
-🗒️ Exemplo de Uso
+🗒️ Exemplo de Uso:
 
 Ao iniciar o programa, você verá o seguinte menu:
 
@@ -50,8 +54,9 @@ Se escolher [S] Sacar, o programa verificará se o saldo é suficiente e se os l
 Se escolher [E] Extrato, serão exibidos todos os saques e depósitos.
 
 Se escolher [F] Sair, o programa será encerrado.
+--------------------------------------------------------------------------------------------------------------
 
-Exemplo de Execução
+Exemplo de Execução:
 
 Digite o valor para depósito: R$ 500
 Saldo atualizado no valor de R$ 1500
@@ -62,8 +67,10 @@ Saldo atualizado no valor de R$ 1300
 ===== Extrato Bancário =====
 - 200
 + 500
-============================
+=======================
 Saldo atual: R$1300
+
+--------------------------------------------------------------------------------------------------------------
 
 📈 Melhorias Futuras
 
@@ -72,7 +79,8 @@ Saldo atual: R$1300
 📂 Integrar com banco de dados para persistência
 
 🛠️ Criar testes automatizados para validação
+--------------------------------------------------------------------------------------------------------------
 
 👥 Autor
 
-Desenvolvido por Seu Nome.
+Desenvolvido por Felipe Martins.
