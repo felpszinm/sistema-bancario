@@ -38,28 +38,45 @@ def depositar(saldo, deposito):
     else:
         saldo += deposito
         return saldo    # Retorna o saldo atualizado.
+    
+def transacoes(limite):
+    limite += 1
+    if limite == 10:     # Se as transações (depositos/saques) chegarem a 10, o programa informará a mensagem de limite de transações atingido.
+            print('Limite de dez transações diárias atingidas...')
+            return False
+    return limite
+            
+        
+    
 
     
 saldo = 1000        # Saldo da conta.
 limite = 500        # Limite para sacar.
 extrato_saque = [] # Lista aonde os saques feitos vão ser cadastrados.
 extrato_deposito = [] # Lista aonde os depositos feitos vão ser cadastrados.
-numero_saque = 0    
+numero_saque = 0 
+horario_saque = []
+horario_deposito = []   
 LIMITE_SAQUE = 3
+limite_transacoes = 0
 
 
 while True:
     opcao_menu = input(menu).upper()
     
     if opcao_menu == 'F':   # Se for escolhido a opção de sair, ele ira finalizar o while.
-            print('Saindo do programa...')
-            break
+        print('Saindo do programa...')
+        break
         
     while True:
-
+    
         if opcao_menu == 'S':       # Se escolhido a opção SACAR, é mostrado um input para o usuario sacar o valor.
             if numero_saque == LIMITE_SAQUE:    # Se numero de saque for igual a Limite de saques, aparece uma mensagem de "Limite atingido" e volta para o inicio
                 print('Limite de saques atingido!')
+                break
+            
+            limite_transacoes = transacoes(limite_transacoes) # Atualiza o valor de limite_transacoes (Pelo saque)
+            if limite_transacoes is False:  # Se a variavel for False (Atribuida na def), o programa para
                 break
             
             valor_de_saque = float(input('Digite o valor de saque: R$'))   
@@ -73,9 +90,15 @@ while True:
                 break
         
         elif opcao_menu == 'D':     # Se escolhido opção DEPOSITAR, é mostrado um input para usuário digitar o valor para depósito.
+            
+            limite_transacoes = transacoes(limite_transacoes)   # Atualiza o valor de limite_transacoes (Pelo deposito)
+            if limite_transacoes is False: # Se a variavel for False (Atribuida na def), o programa para
+                break
+            
+            
             valor_de_deposito = float(input('Digite o valor para depósito: R$'))
             novo_saldo = depositar(saldo, valor_de_deposito) # A função retorna valor de depósito e a variavel novo_saldo, atualiza o saldo anterior valor.
-    
+            
             if novo_saldo != saldo:
                 saldo = novo_saldo
                 print(f'Saldo atualizado no valor de R$ {saldo}')
@@ -105,6 +128,13 @@ while True:
             break    
     
 
+"""
+OBJETIVOS:
 
+Se o usuário tentar fazer uma transação após atingir o limite, deve ser informado que ele excedeu o número de transações permitidas para aquela data (Mostre a data).
+
+Mostre no extrato, a data e hora de todas as transações.
+
+"""
 
 
