@@ -1,4 +1,5 @@
 
+from datetime import datetime, timedelta
 from time import sleep
 
 menu = """
@@ -40,9 +41,12 @@ def depositar(saldo, deposito):
         return saldo    # Retorna o saldo atualizado.
     
 def transacoes(limite):
+    data = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     limite += 1
-    if limite == 10:     # Se as transações (depositos/saques) chegarem a 10, o programa informará a mensagem de limite de transações atingido.
-            print('Limite de dez transações diárias atingidas...')
+
+    if limite == 3:     # Se as transações (depositos/saques) chegarem a 10, o programa informará a mensagem de limite de transações atingido.
+            print(f'Limite de dez transações diárias atingidas da data {data.strftime("%d-%m-%y")}')
+            print(f'Transações liberadas a partir da data {(data + timedelta(days=1)).strftime("%d-%m-%y %H:%M")}')
             return False
     return limite
             
@@ -59,6 +63,8 @@ horario_saque = []
 horario_deposito = []   
 LIMITE_SAQUE = 3
 limite_transacoes = 0
+data_transacao_saque = []
+data_transacao_deposito = []
 
 
 while True:
@@ -74,6 +80,8 @@ while True:
             if numero_saque == LIMITE_SAQUE:    # Se numero de saque for igual a Limite de saques, aparece uma mensagem de "Limite atingido" e volta para o inicio
                 print('Limite de saques atingido!')
                 break
+            
+            data_transacao_saque.append(datetime.now())
             
             limite_transacoes = transacoes(limite_transacoes) # Atualiza o valor de limite_transacoes (Pelo saque)
             if limite_transacoes is False:  # Se a variavel for False (Atribuida na def), o programa para
@@ -95,6 +103,7 @@ while True:
             if limite_transacoes is False: # Se a variavel for False (Atribuida na def), o programa para
                 break
             
+            data_transacao_deposito.append(datetime.now())
             
             valor_de_deposito = float(input('Digite o valor para depósito: R$'))
             novo_saldo = depositar(saldo, valor_de_deposito) # A função retorna valor de depósito e a variavel novo_saldo, atualiza o saldo anterior valor.
@@ -111,8 +120,8 @@ while True:
             if len(extrato_saque) == 0 or len(extrato_saque) == 0: # Se não for feito nenhum depósito e nenhum saque, aparece a mensagem de que não há movimentações.
                 print('\nNão há movimentações para o extrato.\n')
                 
-            for saque in extrato_saque:
-                print(f'\033[1;31m - {saque}')  # Saída para os saques feitos sairem na coloração vermelha no extrato.
+            for saque, data_saque in extrato_saque, data_transacao_saque:
+                print(f'\033[1;31m - {saque} \033[39m{data_saque} ')  # Saída para os saques feitos sairem na coloração vermelha no extrato.
                 
             for deposito in extrato_deposito:   # Saída para os depositos feitos sairem na coloração verde no extrato.
                 print(f'\033[92m + {deposito}')
@@ -131,7 +140,7 @@ while True:
 """
 OBJETIVOS:
 
-Se o usuário tentar fazer uma transação após atingir o limite, deve ser informado que ele excedeu o número de transações permitidas para aquela data (Mostre a data).
+Se o usuário tentar fazer uma transação após atingir o limite, deve ser informado que ele excedeu o número de transações permitidas para aquela data (Mostre a data). FEITO
 
 Mostre no extrato, a data e hora de todas as transações.
 
