@@ -22,6 +22,7 @@ class Account(ABC): #* Classe Abstrata
         raise NotImplementedError('Withdraw Not Implemented. Please Implement this method')
 
 
+#? Tipos de contas: 
 class CurrentAccount(Account): #* Conta Corrente (Herdado de Conta)
     def __init__(self, agency, num_account, balance):
         super().__init__(agency, num_account, balance)
@@ -39,8 +40,6 @@ class CurrentAccount(Account): #* Conta Corrente (Herdado de Conta)
             print(f'You withdraw ${value} in your account.')
         print(f'Balance: ${self.balance}.')
         print(f'Your limit: ${self.limit}')
-
-
 
 class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
     def __init__(self, agency, num_account, balance):
@@ -60,7 +59,6 @@ class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
         print(f'Your limit: ${self.limit}')
         
 
-#? PARTE DE PESSOA / CLIENTE
 class Person(ABC):
     def __init__(self, name, age):
         self.name = name
@@ -82,13 +80,15 @@ class Client(Person): #* Cliente (Herdado de Pessoa)
         return self.age
 
 
-
-#? PARTE DE BANCO
 class Bank():
     def __init__(self, client, account):
         self.client = client
         self.account = account
+        self.agency = None 
     
-    def _auth(self):
-        if self.client:
-            ...
+    def _auth(self, agency_number):
+        if self.account.agency != agency_number:
+            print('Invalid agency number. Please check your bank agency!')
+            return False
+        print('Authentication successful.')
+        return True
