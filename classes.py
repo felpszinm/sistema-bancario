@@ -56,7 +56,6 @@ class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
             print(f'You withdraw ${value} in your account.')
         print(f'Balance: ${self.balance}.')
         print(f'Your limit: ${self._limit}')
-        
 
 
 class Person(ABC):
@@ -77,7 +76,6 @@ class Client(Person): #* Cliente (Herdado de Pessoa)
     @property
     def client_age(self):
         return self.age
-
 
 
 class Bank():
@@ -101,6 +99,7 @@ class Bank():
 
     #* Como cliente e conta está agregado ao Banco, precisamos somente da validação da agência
     def withdraw_auth(self, agency_number, password):
+        
         if not self.withdraws_attemps == 0:  
 
             if self.account.agency != agency_number:
@@ -108,10 +107,11 @@ class Bank():
             
             elif self._password != password:
                 self.withdraws_attemps -= 1
-                print(f'Incorrect Password\nYou have more {self.attempts} attempts')
+                print(f'Incorrect Password\nYou have more {self.withdraws_attemps} attempts')
             
             elif self.account.agency == agency_number and self._password == password:
                 self.agency = agency_number
                 print('Authentication successful.')
+                
         else:
             print('Your account is blocked to do withdraws. Try later again.')
