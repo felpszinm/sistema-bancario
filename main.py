@@ -12,43 +12,44 @@ if __name__ == '__main__':
     str_account = "".join([str(a) for a in account])
     num_account = int(str_account)
 
+    while True:
+        print('\t\tMENU\t\t\n\nChoose the options\n[1] -> Create Bank Account\n[2] -> Login\n[3] -> Exit')
+        user_menu = int(input('>> '))
 
-    print('\t\tMENU\t\t\n\nChoose the options\n[1] -> Create Bank Account\n[2] -> Login\n[3] -> Exit')
-    user_menu = int(input('>> '))
+        #* Criação da conta e do cliente:
+        if user_menu == 1:
+            print('Write your name and age.')
+            user_name = input('Your name: ').lower().capitalize()
+            user_age = int(input('Your age: '))
+            user_password = input('Create a password: ')
 
-    #* Criação da conta e do cliente:
-    if user_menu == 1:
-        print('Write your name and age.')
-        user_name = input('Your name: ').lower().capitalize().split()
-        user_age = int(input('Your age: '))
-        user_password = input('Create a password: ')
+            if user_age < 18:
+                print("You're young to create a bank account.")
+            else:
+                print('\tBANK ACCOUNT\t\t\n\nChoose the options\n[1] -> Current Account\n[2] -> Savings Account\n')
+                user_type_account = int(input('>> '))
 
-        if user_age < 18:
-            print("You're young to create a bank account.")
-            
-        print('\tBANK ACCOUNT\t\t\n\nChoose the options\n[1] -> Current Account\n[2] -> Savings Account\n')
-        user_type_account = int(input('>> '))
-
-        if user_type_account == 1:
-            user_account = CurrentAccount(agency=num_agency, num_account=num_account, balance=0)
-        elif user_type_account == 2:
-            user_account = SavingsAccount(agency=num_agency, num_account=num_account, balance=0)
-        
-        user_client = Client(user_name, user_age, user_account)
-        user_bank = Bank(user_client, user_account, user_password)
-        os.system('cls')
-        print(f'Hello {user_name}, your account has created!\nYour agency is: {num_agency}\nYour Account Number is: {num_account}\n')
+                if user_type_account == 1:
+                    user_account = CurrentAccount(agency=num_agency, num_account=num_account, balance=0)
+                elif user_type_account == 2:
+                    user_account = SavingsAccount(agency=num_agency, num_account=num_account, balance=0)
+                
+                user_client = Client(user_name, user_age, user_account)
+                user_bank = Bank(user_client, user_account, user_password)
+                os.system('cls')
+                print(f'Hello {user_name}, your account has created!\nYour agency is: {num_agency}\nYour Account Number is: {num_account}\n')
+                break
 
 
     print(f'\033[91mWelcome to the StarzBank {user_name}!\033[0m\n')
-    while True:
-        print('\n\tStarzBank\t\t\n\nChoose the options\n[1] -> Login\n[2] -> Exit\n')
-        user_type_account = int(input('>> '))
-        if user_menu == 1:
+    print('\n\tStarzBank\t\t\n\nChoose the options\n[1] -> Login\n[2] -> Exit\n')
+    user_menu = int(input('>> '))
+    if user_menu == 1:
             login_number = int(input('Enter the number account: '))
             login_password = input('Enter the password: ')
             user_bank.account_auth(login_number, login_password)
-
+    while True:
+        if user_menu == 1:
             if user_bank.account_auth(login_number, login_password):
                 print('\tBANK ACCOUNT\t\t\n\nChoose the options\n[1] -> Deposit\n[2] -> Withdraw\n')
                 user_bank_menu = int(input('>> '))
@@ -62,7 +63,7 @@ if __name__ == '__main__':
                     print('\tBANK WITHDRAW')
                     user_agency = int(input('Digit your agency: '))
                     user_password = int(input('Digit your password: '))
-                    user_bank.withdraw_auth(agency, user_password)
+                    user_bank.withdraw_auth(user_agency, user_password)
                     value = float(input('Amount to be withdrawn: $ '))
                     user_account.withdraw(value)
         elif user_menu == 2:
