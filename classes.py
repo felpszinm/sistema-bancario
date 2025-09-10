@@ -5,7 +5,7 @@ class Account(ABC): #* Classe Abstrata
         self.agency = agency
         self.num_account = num_account
         self.balance = balance
-        self.limit = 1000
+        self._limit = 1000
 
     #* Método de depositar dinheiro na conta (Sem limite definido)
     def deposit(self, value):
@@ -21,12 +21,11 @@ class Account(ABC): #* Classe Abstrata
     def withdraw(self, value): 
         raise NotImplementedError('Withdraw Not Implemented. Please Implement this method')
 
-
 #? Tipos de contas: 
 class CurrentAccount(Account): #* Conta Corrente (Herdado de Conta)
     def __init__(self, agency, num_account, balance):
         super().__init__(agency, num_account, balance)
-        self.limit = 1500
+        self.__limit = 1500
     
     #* Método de sacar em contas correntes (limite maximo = 1500)
     def withdraw(self, value):
@@ -36,10 +35,10 @@ class CurrentAccount(Account): #* Conta Corrente (Herdado de Conta)
             print('Invalid value.')
         else:
             self.balance -= value
-            self.limit -= value
+            self.__limit -= value
             print(f'You withdraw ${value} in your account.')
         print(f'Balance: ${self.balance}.')
-        print(f'Your limit: ${self.limit}')
+        print(f'Your limit: ${self.__limit}')
 
 class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
     def __init__(self, agency, num_account, balance):
@@ -53,17 +52,17 @@ class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
             print('Invalid value.')
         else:
             self.balance -= value
-            self.limit -= value
+            self._limit -= value
             print(f'You withdraw ${value} in your account.')
         print(f'Balance: ${self.balance}.')
-        print(f'Your limit: ${self.limit}')
+        print(f'Your limit: ${self._limit}')
         
+
 
 class Person(ABC):
     def __init__(self, name, age):
         self.name = name
         self.age = age
-
 
 class Client(Person): #* Cliente (Herdado de Pessoa)
     def __init__(self, name, age, account):
@@ -80,15 +79,39 @@ class Client(Person): #* Cliente (Herdado de Pessoa)
         return self.age
 
 
+
 class Bank():
-    def __init__(self, client, account):
+    def __init__(self, client, account, password):
         self.client = client
         self.account = account
-        self.agency = None 
-    
-    def _auth(self, agency_number):
-        if self.account.agency != agency_number:
-            print('Invalid agency number. Please check your bank agency!')
-            return False
-        print('Authentication successful.')
-        return True
+        self.agency = None
+        self._password = password
+        self.account_attemps = 3
+        self.withdraws_attemps = 3
+        
+    #* Autenticação da conta do banco de usuario:
+    def account_auth(self, num_account, password):
+        if self.account_attemps != 0:
+            if self.account.num_account != num_account or self._password != password:
+                self.account_attemps -= 1
+                print('Incorrect password or account number. Please check your password.')
+            else:
+                print('Login accepted!') #TODO: Verificar por que está retornando 2 vezes
+                return True
+
+    #* Como cliente e conta está agregado ao Banco, precisamos somente da validação da agência
+    def withdraw_auth(self, agency_number, password):
+        if not self.withdraws_attemps == 0:  
+
+            if self.account.agency != agency_number:
+                print('Invalid agency number. Please check your bank agency!')
+            
+            elif self._password != password:
+                self.withdraws_attemps -= 1
+                print(f'Incorrect Password\nYou have more {self.attempts} attempts')
+            
+            elif self.account.agency == agency_number and self._password == password:
+                self.agency = agency_number
+                print('Authentication successful.')
+        else:
+            print('Your account is blocked to do withdraws. Try later again.')
