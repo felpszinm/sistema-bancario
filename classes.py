@@ -84,25 +84,35 @@ class Bank():
         self.account = account
         self.agency = None
         self._password = password
-        self.account_attemps = 3
-        self.withdraws_attemps = 3
-        
+        self.account_attemps = 2
+        self.withdraws_attemps = 2
+    
+    # TODO: Arrumar o método de autenticação, sempre que erro uma senha já vai direto pro account_attemps
     #* Autenticação da conta do banco de usuario:
     def account_auth(self, num_account, password):
-        if self.account_attemps != 0:
+        if self.account_attemps == 0:
+            return 'blocked'
+        
+        elif self.account_attemps != 0:
+
             if self.account.num_account != num_account or self._password != password:
+                print(f'Incorrect password or account number. Please check your password.\nYou have more {self.account_attemps} attempts')
                 self.account_attemps -= 1
-                print('Incorrect password or account number. Please check your password.')
             else:
-                print('Login accepted!') #TODO: Verificar por que está retornando 2 vezes
                 return True
 
+
+    #TODO: Verificar os tipos de account.agency e da agency number:
     #* Como cliente e conta está agregado ao Banco, precisamos somente da validação da agência
     def withdraw_auth(self, agency_number, password):
+        print(self.account.agency, agency_number)
+        print(type(self.account.agency), type(agency_number))
+        print(self._password, password)
+        print(type(self._password), type(password))
         
         if not self.withdraws_attemps == 0:  
 
-            if self.account.agency != agency_number:
+            if int(self.account.agency) != int(agency_number):
                 print('Invalid agency number. Please check your bank agency!')
             
             elif self._password != password:
@@ -110,7 +120,6 @@ class Bank():
                 print(f'Incorrect Password\nYou have more {self.withdraws_attemps} attempts')
             
             elif self.account.agency == agency_number and self._password == password:
-                self.agency = agency_number
                 print('Authentication successful.')
                 
         else:
