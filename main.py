@@ -1,6 +1,8 @@
 from classes import CurrentAccount, SavingsAccount, Client, Bank
+from time import sleep
 import random
 import os
+
 
 if __name__ == '__main__':
     #* Pego os numeros aleatorios e unifico eles com join, depois transformo em inteiros.
@@ -41,31 +43,38 @@ if __name__ == '__main__':
                 break
 
 
-    print(f'\033[91mWelcome to the StarzBank {user_name}!\033[0m\n')
-    print('\n\tStarzBank\t\t\n\nChoose the options\n[1] -> Login\n[2] -> Exit\n')
-    user_menu = int(input('>> '))
-    if user_menu == 1:
-            login_number = int(input('Enter the number account: '))
-            login_password = input('Enter the password: ')
-            user_bank.account_auth(login_number, login_password)
+        print(f'\033[91mWelcome to the StarzBank {user_name}!\033[0m')
+        print('\n\tStarzBank\t\t\n\nChoose the options\n[1] -> Login\n[2] -> Exit\n')
+        user_menu = int(input('>> '))
+
     while True:
         if user_menu == 1:
-            if user_bank.account_auth(login_number, login_password):
-                print('\tBANK ACCOUNT\t\t\n\nChoose the options\n[1] -> Deposit\n[2] -> Withdraw\n')
-                user_bank_menu = int(input('>> '))
+            login_number = int(input('Enter the number account: '))
+            login_password = input('Enter the password: ')
 
-                if user_bank_menu == 1:
-                    print('\tBANK DEPOSIT')
-                    value = float(input('Amount to be deposited: $ '))
-                    user_account.deposit(value)
+        if user_bank.account_auth(login_number, login_password) == 'blocked':
+            print('Your account has blocked.')
+            break
+        if user_bank.account_auth(login_number, login_password) is True:
+            print('Login accepted!')
+            sleep(3)
+            print('\tBANK ACCOUNT\t\t\n\nChoose the options\n[1] -> Deposit\n[2] -> Withdraw\n')
+            user_bank_menu = int(input('>> '))
 
-                elif user_bank_menu == 2:
-                    print('\tBANK WITHDRAW')
-                    user_agency = int(input('Digit your agency: '))
-                    user_password = int(input('Digit your password: '))
-                    user_bank.withdraw_auth(user_agency, user_password)
-                    value = float(input('Amount to be withdrawn: $ '))
-                    user_account.withdraw(value)
+            if user_bank_menu == 1:
+                print('\tBANK DEPOSIT')
+                value = float(input('Amount to be deposited: $ '))
+                user_account.deposit(value)
+
+            elif user_bank_menu == 2:
+                print('\tBANK WITHDRAW')
+                user_agency = int(input('Digit your agency: '))
+                user_password = int(input('Digit your password: '))
+
+                user_bank.withdraw_auth(user_agency, user_password)
+                value = float(input('Amount to be withdrawn: $ '))
+                user_account.withdraw(value)
+    
         elif user_menu == 2:
             print('Program Finished.')
             break
