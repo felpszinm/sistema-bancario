@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 class Account(ABC): #* Classe Abstrata
-    def __init__(self, agency, num_account, balance):
+    def __init__(self, agency, num_account, balance) -> None:
         self.agency = agency
         self.num_account = num_account
         self.balance = balance
@@ -9,11 +9,11 @@ class Account(ABC): #* Classe Abstrata
 
     #* Método abstrado: (Vai ser setado nas subclasses através do polimorfismo)
     @abstractmethod
-    def withdraw(self, value): 
+    def withdraw(self, value:float): 
         raise NotImplementedError('Withdraw Not Implemented. Please Implement this method')
 
     #* Método de depositar dinheiro na conta (Sem limite definido)
-    def deposit(self, value): 
+    def deposit(self, value:float): 
         if not isinstance(value, (int, float)) or value <= 0:
             print('Invalid value.')
         else:
@@ -29,13 +29,13 @@ class CurrentAccount(Account): #* Conta Corrente (Herdado de Conta)
         self.__limit = 1500
     
     #* Método de sacar em contas correntes (limite maximo = 1500)
-    def withdraw(self, value):
+    def withdraw(self, value:float):
         if value >= self._limit:
             print('Insuficient Balance.')
-        elif not isinstance(value, (int, float)):
+        elif not isinstance(value, float):
             print('Invalid value.')
         else:
-            self.balance -= value
+            self.balance += -value
             self.__limit -= value
             print(f'You withdraw ${value} in your account.')
         print(f'Balance: ${self.balance}.')
@@ -46,21 +46,21 @@ class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
         super().__init__(agency, num_account, balance)
 
     #* Método de sacar em contas poupanças (limite maximo = 1000 | Padrão)
-    def withdraw(self, value):
+    def withdraw(self, value:float):
         if value >= self._limit:
             print('Insuficient Balance.')
-        elif not isinstance(value, (int, float)):
+        elif not isinstance(value, float):
             print('Invalid value.')
         else:
-            self.balance -= value
+            self.balance += -value
             self._limit -= value
             print(f'You withdraw ${value} in your account.')
         print(f'Balance: ${self.balance}.')
         print(f'Your limit: ${self._limit}')
 
 
-class Person(ABC):
-    def __init__(self, name, age):
+class Person:
+    def __init__(self, name, age) -> None:
         self.name = name
         self.age = age
 
@@ -80,7 +80,7 @@ class Client(Person): #* Cliente (Herdado de Pessoa)
 
 
 class Bank():
-    def __init__(self, client, account, password: str):
+    def __init__(self, client, account, password: str) -> None:
         self.client = client
         self.account = account
         self._password = password
@@ -99,25 +99,22 @@ class Bank():
         return True
 
 
-    #TODO: Verificar os tipos de account.agency e da agency number:
     #* Como cliente e conta está agregado ao Banco, precisamos somente da validação da agência
-    def withdraw_auth(self, agency_number: int, password: str):
-        
-        if not self.withdraws_attemps == 0:  
+    def withdraw_auth(self, agency_number:int, password:str):
+        print(self.account.agency, type(self.account.agency))
+        print(agency_number, type(agency_number))
 
-            if int(self.account.agency) != agency_number:
-                print('Invalid agency number. Please check your bank agency!')
-                return False
-            
-            elif self._password != password:
+        print(self._password, type(self._password))
+        print(password, type(password))
+        
+        if self.withdraws_attemps == 0:
+            print('Your account is blocked to do withdraws. Try later again.')
+            return 'blocked'
+
+        elif self.account.agency != agency_number or self._password != password:
                 self.withdraws_attemps -= 1
-                print(f'Incorrect Password\nYou have more {self.withdraws_attemps} attempts')
-                return False
+                print(f'Incorrect agency number or password.\nYou have more {self.withdraws_attemps} attempts')
             
-            elif int(self.account.agency) == agency_number and self._password == password:
-                print('Authentication successful.')
+        elif self.account.agency == agency_number and self._password == password:
                 return True
                 
-        else:
-            print('Your account is blocked to do withdraws. Try later again.')
-            return False
