@@ -60,23 +60,38 @@ class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
 
 
 class Person:
-    def __init__(self, name, age) -> None:
+    def __init__(self, name:str, age:int) -> None:
         self.name = name
         self.age = age
+    
+    #* Getters e setters para nome e idade do cliente.
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name:str):
+        self.name = self._name
+    
+    @property
+    def age(self):
+        return self.age
+    
+    @age.setter
+    def age(self, age: int):
+        return self._age
+    
+    def __repr__(self):
+        class_name = type(self).__name__
+        attrs = f'({self.name!r}), {self.age!r}'
+        return f'{class_name}{attrs}'
+
 
 class Client(Person): #* Cliente (Herdado de Pessoa)
     def __init__(self, name, age, account):
         super().__init__(name, age)
         self.account = account
 
-    #* Getters para nome e idade do cliente.
-    @property
-    def client_name(self):
-        return self.name
-
-    @property
-    def client_age(self):
-        return self.age
 
 
 class Bank():
