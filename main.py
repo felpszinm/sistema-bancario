@@ -69,19 +69,24 @@ if __name__ == '__main__':
                     value = float(input('Amount to be deposited: $ '))
                     user_account.deposit(value)
 
-                #! Erro aqui
                 elif user_bank_menu == 2:
                     print('\tBANK WITHDRAW')
                     user_agency = int(input('Digit your agency: '))
-                    user_password = int(input('Digit your password: '))
+                    user_password = input('Digit your password: ')
+                    withdraw_validation = user_bank.withdraw_auth(user_agency, user_password)
 
-                    user_bank.withdraw_auth(user_agency, user_password)
-                    value = float(input('Amount to be withdrawn: $ '))
-                    user_account.withdraw(value)
+                    if withdraw_validation == 'blocked':
+                        print('You have exceeded the withdrawal attempt limit')
+                        break
+                    elif withdraw_validation is True:
+                        print('Authentication successful.')
+                        sleep(2)
+                        value = float(input('Amount to be withdrawn: $ '))
+                        user_account.withdraw(value)
+                    else:
+                        print(withdraw_validation)
     
                 elif user_menu == 2:
                     print('Program Finished.')
                     break
     
-    
-#TODO: Verificar o motivo da autenticação do saque estar falhando
