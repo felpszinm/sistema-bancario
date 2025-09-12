@@ -56,7 +56,7 @@ if __name__ == '__main__':
             if validation == 'blocked':
                 print('Your account has blocked.')
                 break
-
+        
             elif validation is True:
                 print('Login accepted!')
                 sleep(3)
@@ -78,15 +78,19 @@ if __name__ == '__main__':
                     if withdraw_validation == 'blocked':
                         print('You have exceeded the withdrawal attempt limit')
                         break
+                    
                     elif withdraw_validation is True:
                         print('Authentication successful.')
                         sleep(2)
                         value = float(input('Amount to be withdrawn: $ '))
-                        user_account.withdraw(value)
-                    else:
-                        print(withdraw_validation)
+                        user_withdraw = user_account.withdraw(value)
+
+                        if user_withdraw is False:
+                            print('The amount entered is greater than your balance.')
+                        elif user_withdraw is True:
+                            print('Withdrawal successful!')
+
     
-                elif user_menu == 2:
-                    print('Program Finished.')
-                    break
-    
+        elif user_menu == 2:
+            print('Program Finished.')
+            break
