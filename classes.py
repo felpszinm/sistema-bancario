@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
 class Account(ABC): #* Classe Abstrata
-    def __init__(self, agency, num_account, balance) -> None:
+    def __init__(self, agency: int, num_account: int, balance: float) -> None:
         self.agency = agency
         self.num_account = num_account
         self.balance = balance
-        self._limit = 1000
+        self._limit = balance
 
     #* Método abstrado: (Vai ser setado nas subclasses através do polimorfismo)
     @abstractmethod
@@ -18,6 +18,7 @@ class Account(ABC): #* Classe Abstrata
             print('Invalid value.')
         else:
             self.balance += value
+            self._limit += self.balance
             print(f'You deposited ${value} in your account.')
         print(f'Your balance is ${self.balance}.')
     
@@ -26,20 +27,20 @@ class Account(ABC): #* Classe Abstrata
 class CurrentAccount(Account): #* Conta Corrente (Herdado de Conta)
     def __init__(self, agency, num_account, balance):
         super().__init__(agency, num_account, balance)
-        self.__limit = 1500
+        self.__limit = self._limit + 500 
     
+    #TODO:
     #* Método de sacar em contas correntes (limite maximo = 1500)
     def withdraw(self, value:float):
-        if value >= self._limit:
-            print('Insuficient Balance.')
-        elif not isinstance(value, float):
-            print('Invalid value.')
+        if value > self.__limit or self.__limit <= 0 or not isinstance(value, float):
+            return False
         else:
-            self.balance += -value
+            self.balance -= value
             self.__limit -= value
-            print(f'You withdraw ${value} in your account.')
-        print(f'Balance: ${self.balance}.')
-        print(f'Your limit: ${self.__limit}')
+            print(f'\nYou withdraw ${value} in your account.')
+            print(f'Balance: ${self.balance}.')
+            print(f'Your withdraw credit: ${self.__limit}')
+            return True
 
 class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
     def __init__(self, agency, num_account, balance):
@@ -47,16 +48,15 @@ class SavingsAccount(Account): #* Conta Poupança (Herdado de Conta)
 
     #* Método de sacar em contas poupanças (limite maximo = 1000 | Padrão)
     def withdraw(self, value:float):
-        if value >= self._limit:
-            print('Insuficient Balance.')
-        elif not isinstance(value, float):
-            print('Invalid value.')
+        if value > self._limit or self._limit <= 0 or not isinstance(value, float):
+            return False
         else:
-            self.balance += -value
+            self.balance -= value
             self._limit -= value
-            print(f'You withdraw ${value} in your account.')
-        print(f'Balance: ${self.balance}.')
-        print(f'Your limit: ${self._limit}')
+            print(f'\nYou withdraw ${value} in your account.')
+            print(f'Balance: ${self.balance}.')
+            print(f'Your withdraw credit: ${self._limit}')
+            return True
 
 
 class Person:
@@ -89,10 +89,10 @@ class Bank():
     
     #* Autenticação da conta do banco de usuario:
     def account_auth(self, num_account:int , password: str):
-        if self.account_attemps == 0:
+        if self.account_attemps == 1:
             return 'blocked'
         
-        if self.account.num_account != num_account or self._password != password:
+        elif self.account.num_account != num_account or self._password != password:
                 self.account_attemps -= 1
                 print(f'Incorrect password or account number. Please check your password.\nYou have more {self.account_attemps} attempts left.')
                 return False
@@ -101,11 +101,6 @@ class Bank():
 
     #* Como cliente e conta está agregado ao Banco, precisamos somente da validação da agência
     def withdraw_auth(self, agency_number:int, password:str):
-        print(self.account.agency, type(self.account.agency))
-        print(agency_number, type(agency_number))
-
-        print(self._password, type(self._password))
-        print(password, type(password))
         
         if self.withdraws_attemps == 0:
             print('Your account is blocked to do withdraws. Try later again.')
