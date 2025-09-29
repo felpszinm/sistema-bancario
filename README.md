@@ -26,13 +26,12 @@ Este projeto é um **simulador interativo de sistema bancário**, desenvolvido e
 ---
 
 ## 🛠️ Estrutura do Projeto
-
-sistema-bancario-main/
-│── sistema-bancario-main/
-│ ├── .gitignore
-│ ├── README.md
-│ ├── classes.py # Contém as classes principais (Account, CurrentAccount, SavingsAccount, Client, Bank)
-│ ├── main.py # Script principal com o menu interativo
+    sistema-bancario-main/
+    │── sistema-bancario-main/
+    │ ├── .gitignore
+    │ ├── README.md
+    │ ├── classes.py # Contém as classes principais (Account, CurrentAccount, SavingsAccount, Client, Bank)
+    │ ├── main.py # Script principal com o menu interativo
 
 ---
 
